@@ -26,8 +26,6 @@ end
 -- Intercept Sprite's set and get functions for position, scale and rotation
 Sprite._set = Sprite.set
 function Sprite:set(key, value)
-	print("Sprite:set", key, value)
-	
 	if value then
 		if key == "anchorX" then
 			self._anchorX = self:getWidth() * value
@@ -52,7 +50,6 @@ end
 
 Sprite._get = Sprite.get
 function Sprite:get(key)
-	print("Sprite:get", key)
 	if key == "anchorX" then
 		return self._anchorX
 	elseif key == "anchorY" then
