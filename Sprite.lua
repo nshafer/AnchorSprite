@@ -7,7 +7,7 @@ Sprite._scaleY = 1
 Sprite._rotation = 0
 
 -- New function to apply all transforms whenever anything changes
-function Sprite:applyTransforms()
+function Sprite:_applyTransforms()
 	local matrix = Matrix.new()
 	
 	-- set position
@@ -44,7 +44,7 @@ function Sprite:set(key, value)
 		else
 			self:_set(key, value)
 		end
-		self:applyTransforms()
+		self:_applyTransforms()
 	end
 end
 
