@@ -19,6 +19,10 @@ function createBox(width, height, lineStyle)
 end
 
 local box1 = createBox(100,100, {2, 0xFF0000, 1})
+local box2 = createBox(100,100, {2, 0x00FF00, 1})
+box2:setAnchor(.2)
+box2:setScale(.5)
+box1:addChild(box2)
 
 box1:setAnchor(.5)
 box1:setRotation(30)
