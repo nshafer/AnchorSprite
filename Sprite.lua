@@ -1,15 +1,17 @@
-Sprite._anchorX = 0
-Sprite._anchorY = 0
-Sprite._positionX = 0
-Sprite._positionY = 0
-Sprite._scaleX = 1
-Sprite._scaleY = 1
-Sprite._rotation = 0
+----------------------------------------
+-- AnchorSprite functions
+----------------------------------------
+AnchorSprite = {}
 
 -- New function to apply all transforms whenever anything changes
-function Sprite:_applyTransforms()
+function AnchorSprite:_applyTransforms()
 	-- Create a new identity matrix
 	local matrix = Matrix.new()
+	
+	-- Zero ourselves out so we can get accurate width and height
+	self:setMatrix(matrix)
+	local anchorOffsetX = self._anchorX * self:getWidth()
+	local anchorOffsetY = self._anchorY * self:getHeight()
 	
 	-- set position
 	matrix:translate(self._positionX, self._positionY)
@@ -20,21 +22,16 @@ function Sprite:_applyTransforms()
 	matrix:scaleY(self._scaleY)
 	
 	-- concatenate offset to new origin in modified coordinate space
-	matrix:translate(-self._anchorX, -self._anchorY)
+	matrix:translate(-anchorOffsetX, -anchorOffsetY)
 	
 	-- Apply the new matrix
 	self:setMatrix(matrix)
 end
 
 -- Intercept Sprite's set and get functions for position, scale and rotation
-Sprite._set = Sprite.set
-function Sprite:set(key, value)
+function AnchorSprite:set(key, value)
 	if value then
-		if key == "anchorX" then
-			self._anchorX = self:getWidth() * value
-		elseif key == "anchorY" then
-			self._anchorY = self:getHeight() * value
-		elseif key == "x" then
+		if key == "x" then
 			self._positionX = value
 		elseif key == "y" then
 			self._positionY = value
@@ -51,13 +48,9 @@ function Sprite:set(key, value)
 	end
 end
 
-Sprite._get = Sprite.get
-function Sprite:get(key)
-	if key == "anchorX" then
-		return self._anchorX
-	elseif key == "anchorY" then
-		return self._anchorY
-	elseif key == "x" then
+--Sprite._get = Sprite.get
+function AnchorSprite:get(key)
+	if key == "x" then
 		return self._positionX
 	elseif key == "y" then
 		return self._positionY
@@ -72,90 +65,153 @@ function Sprite:get(key)
 	end
 end
 
--- New functions for setting the anchor
-function Sprite:getAnchorPoint()
-	return self:get("anchorX"), self:get("anchorY")
-end
-
-function Sprite:setAnchorPoint(x, y)
-	self:set("anchorX", x)
-	self:set("anchorY", y or x)
-end
-
-function Sprite:getAnchorX()
-	return self:get("anchorX")
-end
-
-function Sprite:setAnchorX(x)
-	self:set("anchorX", x)
-end
-
-function Sprite:getAnchorY()
-	return self:get("anchorY")
-end
-
-function Sprite:setAnchorY(y)
-	self:set("anchorY", y)
-end
-
 -- Position functions
-function Sprite:getPosition()
+function AnchorSprite:getPosition()
 	return self:get("x"), self:get("y")
 end
 
-function Sprite:setPosition(x, y)
+function AnchorSprite:setPosition(x, y)
 	self:set("x", x)
 	self:set("y", y)
 end
 
-function Sprite:getX()
+function AnchorSprite:getX()
 	return self:get("x")
 end
 
-function Sprite:setX(x)
+function AnchorSprite:setX(x)
 	self:set("x", x)
 end
 
-function Sprite:getY()
+function AnchorSprite:getY()
 	return self:get("y")
 end
 
-function Sprite:setY(y)
+function AnchorSprite:setY(y)
 	self:set("y", y)
 end
 
 -- Scale functions
-function Sprite:getScale()
+function AnchorSprite:getScale()
 	return self:get("scaleX"), self:get("scaleY")
 end
 
-function Sprite:setScale(x, y)
+function AnchorSprite:setScale(x, y)
 	self:set("scaleX", x)
 	self:set("scaleY", y or x)
 end
 
-function Sprite:getScaleX()
+function AnchorSprite:getScaleX()
 	return self:get("scaleX")
 end
 
-function Sprite:setScaleX(x)
+function AnchorSprite:setScaleX(x)
 	self:set("scaleX", x)
 end
 
-function Sprite:getScaleY()
+function AnchorSprite:getScaleY()
 	return self:get("scaleY")
 end
 
-function Sprite:setScaleY(y)
+function AnchorSprite:setScaleY(y)
 	self:set("scaleY", y)
 end
 
 -- Rotation functions
-function Sprite:getRotation()
+function AnchorSprite:getRotation()
 	return self:get("rotation")
 end
 
-function Sprite:setRotation(rotation)
+function AnchorSprite:setRotation(rotation)
 	self:set("rotation", rotation)
 end
+
+
+----------------------------------------
+-- Sprite additions
+----------------------------------------
+Sprite._anchorSupport = false
+Sprite._anchorBackup = {}
+Sprite._anchorX = 0
+Sprite._anchorY = 0
+Sprite._positionX = 0
+Sprite._positionY = 0
+Sprite._scaleX = 1
+Sprite._scaleY = 1
+Sprite._rotation = 0
+
+-- New functions in Sprite for setting the anchor
+function Sprite:getAnchorX()
+	return self._anchorX
+end
+
+function Sprite:setAnchorX(x)
+	self._anchorX = x
+end
+
+function Sprite:getAnchorY()
+	return self._anchorY
+end
+
+function Sprite:setAnchorY(y)
+	self._anchorY = y
+end
+
+function Sprite:getAnchorPoint()
+	return self:getAnchorX(), self:getAnchorY()
+end
+
+function Sprite:setAnchorPoint(x, y)
+	self:setAnchorX(x)
+	self:setAnchorY(y)
+	
+	if x ~= 0 or y ~= 0 and not self._anchorSupport then
+		self:_enableAnchorSupport()
+	elseif x == 0 and y == 0 and self._anchorSupport then
+		self:_disableAnchorSupport()
+	end
+end
+
+function Sprite:_enableAnchorSupport()
+	self._anchorSupport = true
+	
+	-- Get current values
+	self._positionX = self:getX()
+	self._positionY = self:getY()
+	self._scaleX = self:getScaleX()
+	self._scaleY = self:getScaleY()
+	self._rotation = self:getRotation()
+	
+	-- Override Sprite functions with AnchorSprite versions
+	for k,v in pairs(AnchorSprite) do
+		if type(v) == "function" then
+			--print("AnchorSprite", k, v)
+			if self[k] then
+				-- Backup existing function
+				self._anchorBackup[k] = Sprite[k]
+			end
+			
+			-- Replace with AnchorSprite version
+			self[k] = v
+		end
+	end
+	
+	self:_applyTransforms()
+end
+
+function Sprite:_disableAnchorSupport()
+	self._anchorSupport = false
+	
+	-- Restore backed up functions
+	for k,v in pairs(self._anchorBackup) do
+		self[k] = self._anchorBackup[k]
+	end
+	
+	-- Set current values
+	self:setMatrix(Matrix.new())
+	self:setPosition(self._positionX, self._positionY)
+	self:setScale(self._scaleX, self._scaleY)
+	self:setRotation(self._rotation)
+end
+
 
