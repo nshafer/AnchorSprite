@@ -66,3 +66,17 @@ GTween.new(box2, 5, {scaleX=2, scaleY=2}, {repeatCount=0, reflect=true})
 GTween.new(text2, 5, {rotation=360}, {repeatCount=0})
 GTween.new(text2, 5, {scaleX=2, scaleY=2}, {repeatCount=0, reflect=true})
 
+
+
+-- Create an FPS counter
+local fps = TextField.new(TTFont.new(fontFace, 10), "00")
+stage:addChild(fps)
+fps:setPosition(5, application:getContentHeight()-5)
+local timer = os.timer()
+stage:addEventListener(Event.ENTER_FRAME, function(event)
+	if event.frameCount % 60 == 0 then
+		local currentTimer = os.timer()
+		fps:setText(math.ceil(60 / (currentTimer - timer)))
+		timer = currentTimer
+	end
+end)
