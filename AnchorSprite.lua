@@ -141,29 +141,13 @@ Sprite._scaleY = 1
 Sprite._rotation = 0
 
 -- New functions in Sprite for setting the anchor
-function Sprite:getAnchorX()
-	return self._anchorX
-end
-
-function Sprite:setAnchorX(x)
-	self._anchorX = x
-end
-
-function Sprite:getAnchorY()
-	return self._anchorY
-end
-
-function Sprite:setAnchorY(y)
-	self._anchorY = y
-end
-
 function Sprite:getAnchorPoint()
 	return self:getAnchorX(), self:getAnchorY()
 end
 
 function Sprite:setAnchorPoint(x, y)
-	self:setAnchorX(x)
-	self:setAnchorY(y)
+	self._anchorX = x
+	self._anchorY = y or x
 	
 	if x ~= 0 or y ~= 0 and not self._anchorSupport then
 		self:_enableAnchorSupport()
