@@ -17,41 +17,15 @@ Also, only things that call Sprite functions in Lua will be affected by this.  T
 
 This adds a few new functions to the Sprite class:
 
-###Sprite:setAnchorPoint(x, y)
+###Sprite:setAnchorPoint(x[, y])
 	Sets the anchorpoint of the sprite that affects the point at which rotation and scaling take place around.
 
 	Parameters:
-		x: (number) The x coordinate of the anchor point.  Usually between [0, 1]
-		y: (number) The y coordinate of the anchor point.  Usually between [0, 1]
+		x: (number) The x coordinate of the anchor point.  Usually between [0, 1].
+		y: (number) The y coordinate of the anchor point.  Usually between [0, 1].  If not given, uses x value.
 
 ###Sprite:getAnchorPoint()
 	Returns the x and y coordinates of the anchor point.
 
 	Returns:
 		x, y
-
-###Sprite:setAnchorX(x)
-	Sets the x coordinate of the anchor.
-
-	Parameters:
-		x: (number) The x coordinate of the anchor point.  Usually between [0, 1]
-
-###Sprite:getAnchorX()
-	Returns the x coordinate of the anchor point.
-
-	Returns:
-		x
-
-###Sprite:setAnchorY(y)
-	Sets the y coordinate of the anchor.
-
-	Parameters:
-		y: (number) The y coordinate of the anchor point.  Usually between [0, 1]
-
-###Sprite:getAnchorY()
-	Returns the y coordinate of the anchor point.
-
-	Returns:
-		y
-
-
