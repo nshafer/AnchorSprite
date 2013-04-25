@@ -9,7 +9,9 @@ Just add the Matrix.lua and Sprite.lua to your project.  All Sprite objects will
 
 #Drawbacks
 
-This moves a lot of calculations into the LUA space instead of the base of Gideros for all objects based on the Sprite object. It will come at the cost of increased overhead, especially new table lookups and a lot of matrix multiplication.  It doesn't seem to be much, but keep that in mind if you are modifying the position, rotation or scale of a lot of Sprites at once.
+This moves a lot of calculations into the Lua space instead of the base of Gideros for all objects based on the Sprite object. It will come at the cost of increased overhead, especially new table lookups and a lot of matrix multiplication.  It doesn't seem to be much, but keep that in mind if you are modifying the position, rotation or scale of a lot of Sprites at once.
+
+Also, only things that call Sprite functions in Lua will be affected by this.  That means that MovieClip will bypass all of this code and will make objects react as if they have an anchor of (0,0) again.  You have to use GTween instead of MovieClip with this.
 
 #New functions
 
