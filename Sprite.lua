@@ -8,18 +8,21 @@ Sprite._rotation = 0
 
 -- New function to apply all transforms whenever anything changes
 function Sprite:_applyTransforms()
+	-- Create a new identity matrix
 	local matrix = Matrix.new()
 	
 	-- set position
 	matrix:translate(self._positionX, self._positionY)
 	
-	-- set rotation and scale
-	matrix:translate(self._anchorX, self._anchorY)
+	-- concatenate rotation and scale matrices
 	matrix:rotate(self._rotation)
 	matrix:scaleX(self._scaleX)
 	matrix:scaleY(self._scaleY)
+	
+	-- concatenate offset to new origin in modified coordinate space
 	matrix:translate(-self._anchorX, -self._anchorY)
 	
+	-- Apply the new matrix
 	self:setMatrix(matrix)
 end
 
@@ -70,11 +73,11 @@ function Sprite:get(key)
 end
 
 -- New functions for setting the anchor
-function Sprite:getAnchor()
+function Sprite:getAnchorPoint()
 	return self:get("anchorX"), self:get("anchorY")
 end
 
-function Sprite:setAnchor(x, y)
+function Sprite:setAnchorPoint(x, y)
 	self:set("anchorX", x)
 	self:set("anchorY", y or x)
 end
