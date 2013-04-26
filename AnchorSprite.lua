@@ -10,8 +10,8 @@ function AnchorSprite:_applyTransforms()
 	
 	-- Zero ourselves out so we can get accurate width and height
 	self:setMatrix(matrix)
-	local anchorOffsetX = self._anchorX * self:getWidth()
-	local anchorOffsetY = self._anchorY * self:getHeight()
+	local anchorOffsetX = self._anchorPointX * self:getWidth()
+	local anchorOffsetY = self._anchorPointY * self:getHeight()
 	
 	-- set position
 	matrix:translate(self._positionX, self._positionY)
@@ -132,8 +132,8 @@ end
 ----------------------------------------
 Sprite._anchorSupport = false
 Sprite._anchorBackup = {}
-Sprite._anchorX = 0
-Sprite._anchorY = 0
+Sprite._anchorPointX = 0
+Sprite._anchorPointY = 0
 Sprite._positionX = 0
 Sprite._positionY = 0
 Sprite._scaleX = 1
@@ -142,12 +142,12 @@ Sprite._rotation = 0
 
 -- New functions in Sprite for setting the anchor
 function Sprite:getAnchorPoint()
-	return self:getAnchorX(), self:getAnchorY()
+	return self._anchorPointX, self.anchorPointY
 end
 
 function Sprite:setAnchorPoint(x, y)
-	self._anchorX = x
-	self._anchorY = y or x
+	self._anchorPointX = x
+	self._anchorPointY = y or x
 	
 	if x ~= 0 or y ~= 0 and not self._anchorSupport then
 		self:_enableAnchorSupport()
