@@ -42,7 +42,7 @@ function AnchorSprite:set(key, value)
 		elseif key == "rotation" then
 			self._rotation = value
 		else
-			self:_set(key, value)
+			self._anchorBackup.set(self, key, value)
 		end
 		self:_applyTransforms()
 	end
@@ -61,7 +61,7 @@ function AnchorSprite:get(key)
 	elseif key == "rotation" then
 		return self._rotation
 	else
-		return self:_get(key)
+		return self._anchorBackup.get(self, key)
 	end
 end
 
