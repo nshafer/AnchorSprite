@@ -1,7 +1,7 @@
 AnchorSprite
 ============
 
-Adding anchor support to the built-in Sprite.  All position, rotation and scale operations will happen relative to the set anchor point instead of to the origin (0,0).  The default anchor point is (0,0) so unless you change it, Sprites will behave normally.
+AnchorSprite adds anchor support to the built-in Sprite.  All position, rotation and scale operations will happen relative to the set anchor point instead of to the origin (0,0).  The default anchor point is (0,0) so unless you change it, Sprites will behave normally.
 
 ##Install
 
