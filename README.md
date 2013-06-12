@@ -7,7 +7,7 @@ Adding anchor support to the built-in Sprite.  All position, rotation and scale 
 
 Just add the Matrix.lua and AnchorSprite.lua to your project.  All Sprite objects will now have the new Anchor support, but will act normally otherwise.  The new code is only enabled if you set an anchor point other than (0,0).
 
-#Example
+##Example
 
 ```lua
 local s = Sprite.new()
